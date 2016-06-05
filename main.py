@@ -18,40 +18,46 @@ cprint("your favorite synth looper!",'green',attrs=['bold'])
 print()
 
 count=0
+ecount=0
 samplerate=44100
 def callback(in_data,frame_count,time_info,status):
-    global mytone,count,top
-    data = mytone[count:count+frame_count]
-    count += frame_count
-    data = data.tostring()
+    global down
+    global count, ecount
+    global mytone, emptytone
+    if down:
+        data = mytone[count:count+frame_count]
+        if count+frame_count >= .1*samplerate:
+            down = False
+            count = 0
+        else:
+            count += frame_count
+        data = data.tostring()
+    if not down:
+        data = emptytone[ecount:ecount+frame_count]
+        ecount += frame_count
+        data = data.tostring()
     return (data,pyaudio.paContinue)
 
 while True:
     p = pyaudio.PyAudio()
+    emptytone = create_empty_tone(8,samplerate)
+    mytone = create_tone(800,.1,samplerate)
+    down=False
 
-    mytone = create_tone(400,.1,samplerate)
-
-    i=input("twang>")
+    i=input("twang> ")
     if i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
+        stream = p.open(
+            format=pyaudio.paFloat32, channels=1,
+            rate=samplerate, output=True,
+            stream_callback=callback,start=False
+        )
+        stream.start_stream()
         while True:
             key = ord(getch())
             if key == 32: #space
-                count=0
-                try:
-                    stream
-                except NameError:
-                    stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
-                    stream.start_stream()
-                else:
-                    if stream.is_active():
-                        stream.stop_stream()
-                        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
-                        stream.start_stream()
-                    else:
-                        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
-                        stream.start_stream()
-
+                down = True
+                print(count,down)
             if key == 13: #enter
                 break
 
