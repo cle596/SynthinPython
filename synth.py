@@ -10,10 +10,12 @@ def sine(frequency, length, rate):
 def env(type,length,rate):
     env = []
     length = int(length*rate)
-    for x in range(0,int(length/4)):
-        env.append(1/int(length/4)*x)
-    for x in range(int(length/4),int(length/2)):
-        env.append((-.8/int(length/4))*x+1.8)
+    for x in range(0,int(length/16)):
+        env.append(1/int(length/16)*x)
+    for x in range(int(length/16),int(length/8)):
+        env.append((-.8/int(length/16))*x+1.8)
+    for x in range(int(length/8),int(length/2)):
+        env.append(env[int(length/8)-1])
     for x in range(int(length/2),length):
         env.append(-.2/int(length/2)*x+.4)
     return env

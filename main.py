@@ -32,7 +32,7 @@ def callback(in_data,frame_count,time_info,status):
 while True:
     p = pyaudio.PyAudio()
 
-    mytone = play_tone(400,1,samplerate)
+    mytone = play_tone(400,.5,samplerate)
 
     i=input("twang>")
     if i=="play":
