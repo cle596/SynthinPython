@@ -20,11 +20,11 @@ def playloop():
     while x<8:
         play_tone(
             stream,
-            frequency=C5,
-            length=1,
+            frequency=C5/3,
+            length=.25,
             rate=44100
         )
-        time.sleep(1)
+        time.sleep(.25)
         x+=1
 
 while True:

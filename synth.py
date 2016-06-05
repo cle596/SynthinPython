@@ -9,7 +9,7 @@ def sine(frequency, length, rate):
 
 def env(type,length,rate):
     env = []
-    length = length*rate
+    length = int(length*rate)
     for x in range(0,int(length/4)):
         env.append(1)
     for x in range(int(length/4),int(length/2)):
@@ -20,13 +20,13 @@ def env(type,length,rate):
         env.append((-.2/int(length/4))*x+.8)
     return env
 
-def play_tone(stream, frequency=523.251, length=1, rate=44100):
+def play_tone(stream, frequency=523.251/2, length=1, rate=44100):
     e = env("piano",length,rate)
     chunks = []
     chunks.append(sine(frequency, length, rate)\
-        +.25*sine(frequency*2,length,rate)\
-        +.25*sine(frequency*5,length,rate)\
-        +.15*sine(frequency*7,length,rate)\
+        +.1*sine(frequency*2,length,rate)\
+        +.1*sine(frequency*5,length,rate)\
+        +.05*sine(frequency*7,length,rate)\
     )
     chunk = numpy.concatenate(chunks) * 0.2
     for x in range(0,len(e)):
