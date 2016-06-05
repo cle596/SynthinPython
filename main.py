@@ -31,7 +31,7 @@ while True:
             if key == 32: #space
                 #time2 = time()
                 #print((time2-time1)*1000.0)
-                t = threading.Thread(target=play_tone,args=(stream,125,.3,44100))
+                t = threading.Thread(target=play_tone,args=(stream,125,.2,44100))
                 t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
                 t.start()
             if key == 13: #enter
