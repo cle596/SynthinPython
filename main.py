@@ -27,11 +27,13 @@ while True:
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
         while True:
             key = ord(getch())
-            time1 = time()
+            #time1 = time()
             if key == 32: #space
-                time2 = time()
-                print((time2-time1)*1000.0)
-                play_tone(stream,125,.5,44100)
+                #time2 = time()
+                #print((time2-time1)*1000.0)
+                t = threading.Thread(target=play_tone,args=(stream,125,.3,44100))
+                t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
+                t.start()
             if key == 13: #enter
                 break
 
