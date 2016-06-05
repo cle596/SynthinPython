@@ -57,7 +57,6 @@ while True:
             key = ord(getch())
             if key == 32: #space
                 down = True
-                print(count,down)
             if key == 13: #enter
                 break
 
