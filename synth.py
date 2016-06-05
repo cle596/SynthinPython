@@ -29,15 +29,11 @@ def env(type,length,rate):
 
 def create_tone(frequency=440, length=1, rate=44100):
     e = env("piano",length,rate)
-    chunks = []
-    chunks.append(sine(frequency, length, rate))
-    chunk = numpy.concatenate(chunks)
+    chunk=sine(frequency,length,rate)
     for x in range(0,len(e)):
         chunk[x] *= .8*e[x]
     return chunk.astype(numpy.float32)
 
 def create_empty_tone(length=1,rate=44100):
-    chunks = []
-    chunks.append(empty(length, rate))
-    chunk = numpy.concatenate(chunks)
+    chunk=empty(length, rate)
     return chunk.astype(numpy.float32)
