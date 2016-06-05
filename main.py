@@ -16,9 +16,6 @@ cprint(figlet_format('twang', font='univers'),'green',attrs=['bold'])
 cprint("your favorite synth looper!",'green',attrs=['bold'])
 print()
 
-def playloop():
-    pass
-
 count=0
 top=0
 samplerate=2*44100
@@ -32,7 +29,7 @@ def callback(in_data,frame_count,time_info,status):
 while True:
     p = pyaudio.PyAudio()
 
-    mytone = play_tone(400,.1,samplerate)
+    mytone = create_tone(400,.1,samplerate)
 
     i=input("twang>")
     if i=="play":
@@ -60,16 +57,6 @@ while True:
                         stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
                         stream.start_stream()
 
-                """
-                if !stream.is_active():
-                stream.stop_stream()
-                stream.close()
-                """
-                """
-                t = threading.Thread(target=play_tone,args=(stream,125,1,samplerate))
-                t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
-                t.start()
-                """
             if key == 13: #enter
                 break
 
