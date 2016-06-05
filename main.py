@@ -21,6 +21,7 @@ def playloop():
 
 count=0
 top=0
+samplerate=2*44100
 def callback(in_data,frame_count,time_info,status):
     global mytone,count,top
     data = mytone[count:count+frame_count]
@@ -30,7 +31,7 @@ def callback(in_data,frame_count,time_info,status):
 
 while True:
     p = pyaudio.PyAudio()
-    samplerate=2*44100
+
     mytone = play_tone(400,1,samplerate)
 
     i=input("twang>")
@@ -40,8 +41,10 @@ while True:
             key = ord(getch())
             #time1 = time()
             if key == 32: #space
+
                 #time2 = time()
                 #print((time2-time1)*1000.0)
+
                 count=0
                 try:
                     stream
@@ -51,9 +54,10 @@ while True:
                 else:
                     if stream.is_active():
                         stream.stop_stream()
-                        #stream.close()
+                        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
+                        stream.start_stream()
                     else:
-                        #stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
+                        stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
                         stream.start_stream()
 
                 """
