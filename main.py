@@ -26,7 +26,7 @@ def callback(in_data,frame_count,time_info,status):
     global mytone, emptytone
     if down:
         data = mytone[count:count+frame_count]
-        if count+frame_count >= .1*samplerate:
+        if count+frame_count >= 1*samplerate:
             down = False
             count = 0
         else:
@@ -41,7 +41,7 @@ def callback(in_data,frame_count,time_info,status):
 while True:
     p = pyaudio.PyAudio()
     emptytone = create_empty_tone(8,samplerate)
-    mytone = create_tone(800,.1,samplerate)
+    mytone = create_tone(200,1,samplerate)
     down=False
 
     i=input("twang> ")
@@ -56,7 +56,10 @@ while True:
         while True:
             key = ord(getch())
             if key == 32: #space
-                down = True
+                if down:
+                    count=0
+                else:
+                    down = True
             if key == 13: #enter
                 break
 
