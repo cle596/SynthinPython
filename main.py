@@ -17,27 +17,7 @@ cprint("your favorite synth looper!",'green',attrs=['bold'])
 print()
 
 def playloop():
-    x=0
-    while x<8:
-        play_tone(
-            stream,
-            frequency=C5/3,
-            length=.25,
-            rate=44100
-        )
-        time.sleep(.25)
-        x+=1
-
-def playloop():
-    while True:
-        key = ord(getch())
-        time1 = time()
-        if key == 32: #space
-            time2 = time()
-            print((time2-time1)*1000.0)
-            play_tone(stream,C5,.5,44100)
-        if key == 13: #enter
-            break
+    pass
 
 while True:
     p = pyaudio.PyAudio()
@@ -45,14 +25,16 @@ while True:
     i=input("twang>")
     if i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
-        try:
-            t
-        except NameError:
-            t = threading.Thread(target=playloop())
-            t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
-            t.start()
-        else:
-            pass
+        while True:
+            key = ord(getch())
+            time1 = time()
+            if key == 32: #space
+                time2 = time()
+                print((time2-time1)*1000.0)
+                play_tone(stream,C5,.5,44100)
+            if key == 13: #enter
+                break
+
     elif i=="loop":
         t = threading.Thread(target=playloop)
         t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
