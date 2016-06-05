@@ -26,7 +26,7 @@ def play_tone(frequency=440, length=1, rate=44100):
     chunks.append(sine(frequency, length, rate))
     chunk = numpy.concatenate(chunks)
     for x in range(0,len(e)):
-        chunk[x] *= .5*e[x]
+        chunk[x] *= .8*e[x]
     #stream.write(chunk.astype(numpy.float32).tostring())
     return chunk.astype(numpy.float32)
 
