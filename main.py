@@ -35,9 +35,7 @@ def playloop():
         if key == 32: #space
             time2 = time()
             print((time2-time1)*1000.0)
-            t = threading.Thread(target=play_tone,args=(stream,C5,.5,44100))
-            t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
-            t.start()
+            play_tone(stream,C5,.5,44100)
         if key == 13: #enter
             break
 
@@ -50,7 +48,9 @@ while True:
         try:
             t
         except NameError:
-            playloop()
+            t = threading.Thread(target=playloop())
+            t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
+            t.start()
         else:
             pass
     elif i=="loop":
