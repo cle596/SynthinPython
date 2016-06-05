@@ -10,7 +10,7 @@ from synth import *
 import threading
 from queue import Queue
 from msvcrt import getch
-from time import time
+from time import time,sleep
 
 cprint(figlet_format('twang', font='univers'),'green',attrs=['bold'])
 cprint("your favorite synth looper!",'green',attrs=['bold'])
@@ -19,9 +19,19 @@ print()
 def playloop():
     pass
 
+count=0
+def callback(in_data,frame_count,time_info,status):
+    global mytone,count
+    data = mytone[count:count+frame_count]
+    count += frame_count
+    data = data.tostring()
+    return (data,pyaudio.paContinue)
+
 while True:
     p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paFloat32, channels=1, rate=44100, output=1)
+    samplerate=2*44100
+    mytone = play_tone(400,1,samplerate)
+
     i=input("twang>")
     if i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
@@ -31,9 +41,18 @@ while True:
             if key == 32: #space
                 #time2 = time()
                 #print((time2-time1)*1000.0)
-                t = threading.Thread(target=play_tone,args=(stream,125,.05,3*44100))
+                stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback)
+                stream.start_stream()
+                while stream.is_active():
+                    sleep(0.1)
+                stream.stop_stream()
+                stream.close()
+
+                """
+                t = threading.Thread(target=play_tone,args=(stream,125,1,samplerate))
                 t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
                 t.start()
+                """
             if key == 13: #enter
                 break
 

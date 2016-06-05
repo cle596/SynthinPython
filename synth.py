@@ -10,39 +10,34 @@ def sine(frequency, length, rate):
 def env(type,length,rate):
     env = []
     length = int(length*rate)
-    for x in range(0,int(length/16)):
-        env.append(1)
-    for x in range(int(length/16),int(length/8)):
-        env.append((-.8/int(length/16))*x+1.8)
-    for x in range(int(length/8),int(3*length/4)):
-        env.append(env[int(length/8)-1])
-    for x in range(int(3*length/4),length):
-        env.append((-.2/int(length/4))*x+.8)
+    for x in range(0,int(length/4)):
+        env.append(1/int(length/4)*x)
+    for x in range(int(length/4),int(length/2)):
+        env.append((-.8/int(length/4))*x+1.8)
+    for x in range(int(length/2),length):
+        env.append(-.2/int(length/2)*x+.4)
     return env
 
-def play_tone(stream, frequency=440, length=1, rate=44100):
+def play_tone(frequency=440, length=1, rate=44100):
     e = env("piano",length,rate)
     chunks = []
-    chunks.append(sine(frequency, length, rate)\
-        +(.5*sine(frequency*2,length,rate))\
-        +(.1*sine(frequency*3,length,rate))\
-        +(.2*sine(frequency*5,length,rate))\
-        +(.1*sine(frequency*7,length,rate))\
-        +(.1*sine(frequency*9,length,rate))\
-        +(.1*sine(frequency*11,length,rate))\
-        +(.1*sine(frequency*13,length,rate))\
-    )
-    chunk = numpy.concatenate(chunks) * 0.2
+    chunks.append(sine(frequency, length, rate))
+    chunk = numpy.concatenate(chunks)
     for x in range(0,len(e)):
-        chunk[x] *= e[x]
-    stream.write(chunk.astype(numpy.float32).tostring())
+        chunk[x] *= .5*e[x]
+    #stream.write(chunk.astype(numpy.float32).tostring())
+    return chunk.astype(numpy.float32)
+
+
+
+
 
 C5 = 523.251
 
 if __name__ == '__main__':
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paFloat32,
-                    channels=1, rate=44100, output=1)
+                    channels=1, rate=44100, input=True,output=True,stream_callback=callback)
 
     play_tone(
         stream,
