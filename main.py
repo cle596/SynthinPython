@@ -20,8 +20,9 @@ def playloop():
     pass
 
 count=0
+top=0
 def callback(in_data,frame_count,time_info,status):
-    global mytone,count
+    global mytone,count,top
     data = mytone[count:count+frame_count]
     count += frame_count
     data = data.tostring()
@@ -41,13 +42,25 @@ while True:
             if key == 32: #space
                 #time2 = time()
                 #print((time2-time1)*1000.0)
-                stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback)
-                stream.start_stream()
-                while stream.is_active():
-                    sleep(0.1)
+                count=0
+                try:
+                    stream
+                except NameError:
+                    stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
+                    stream.start_stream()
+                else:
+                    if stream.is_active():
+                        stream.stop_stream()
+                        #stream.close()
+                    else:
+                        #stream = p.open(format=pyaudio.paFloat32, channels=1, rate=samplerate, output=True,stream_callback=callback,start=False)
+                        stream.start_stream()
+
+                """
+                if !stream.is_active():
                 stream.stop_stream()
                 stream.close()
-
+                """
                 """
                 t = threading.Thread(target=play_tone,args=(stream,125,1,samplerate))
                 t.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
