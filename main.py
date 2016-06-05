@@ -8,6 +8,7 @@ from pyfiglet import figlet_format
 
 cprint(figlet_format('twang', font='univers'),'green',attrs=['bold'])
 cprint("your favorite synth looper!",'green',attrs=['bold'])
+print()
 
 from synth import *
 

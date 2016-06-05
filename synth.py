@@ -13,11 +13,11 @@ def env(type,length,rate):
     for x in range(0,int(length/4)):
         env.append(1)
     for x in range(int(length/4),int(length/2)):
-        env.append((-.8/(length/4))*x+1.8)
+        env.append((-.8/int(length/4))*x+1.8)
     for x in range(int(length/2),int(3*length/4)):
         env.append(env[int(length/2)-1])
     for x in range(int(3*length/4),length):
-        env.append(env[int(length/2)-1])
+        env.append((-.2/int(length/4))*x+.8)
     return env
 
 def play_tone(stream, frequency=523.251, length=1, rate=44100):
