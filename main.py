@@ -31,7 +31,7 @@ while True:
             if key == 32: #space
                 time2 = time()
                 print((time2-time1)*1000.0)
-                play_tone(stream,C5,.5,44100)
+                play_tone(stream,125,.5,44100)
             if key == 13: #enter
                 break
 
