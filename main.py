@@ -6,19 +6,19 @@ init(strip=not sys.stdout.isatty()) # strip colors if stdout is redirected
 from termcolor import cprint
 from pyfiglet import figlet_format
 
-from synth import *
 import threading
-from queue import Queue
+
 from msvcrt import getch
 from time import time,sleep
+
+from synth import *
 
 cprint(figlet_format('twang', font='univers'),'green',attrs=['bold'])
 cprint("your favorite synth looper!",'green',attrs=['bold'])
 print()
 
 count=0
-top=0
-samplerate=2*44100
+samplerate=44100
 def callback(in_data,frame_count,time_info,status):
     global mytone,count,top
     data = mytone[count:count+frame_count]
@@ -36,12 +36,7 @@ while True:
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
         while True:
             key = ord(getch())
-            #time1 = time()
             if key == 32: #space
-
-                #time2 = time()
-                #print((time2-time1)*1000.0)
-
                 count=0
                 try:
                     stream

@@ -7,6 +7,10 @@ def sine(frequency, length, rate):
     factor = float(frequency) * (math.pi * 2) / rate
     return numpy.sin(numpy.arange(length) * factor)
 
+def empty(length, rate):
+    length = int(length * rate)
+    return numpy.zeros(length)
+
 def env(type,length,rate):
     env = []
     length = int(length*rate)
@@ -30,4 +34,10 @@ def create_tone(frequency=440, length=1, rate=44100):
     chunk = numpy.concatenate(chunks)
     for x in range(0,len(e)):
         chunk[x] *= .8*e[x]
+    return chunk.astype(numpy.float32)
+
+def create_empty_tone(length=1,rate=44100):
+    chunks = []
+    chunks.append(empty(length, rate))
+    chunk = numpy.concatenate(chunks)
     return chunk.astype(numpy.float32)
