@@ -20,13 +20,15 @@ print()
 count=0
 ecount=0
 samplerate=44100
+notelength=2
 def callback(in_data,frame_count,time_info,status):
     global down
     global count, ecount
     global mytone, emptytone
+    global notelength
     if down:
         data = mytone[count:count+frame_count]
-        if count+frame_count >= 1*samplerate:
+        if count+frame_count >= notelength*samplerate:
             down = False
             count = 0
         else:
@@ -41,11 +43,17 @@ def callback(in_data,frame_count,time_info,status):
 while True:
     p = pyaudio.PyAudio()
     emptytone = create_empty_tone(8,samplerate)
-    mytone = create_tone(200,1,samplerate)
+    mytone = create_tone(440,notelength,samplerate)
     down=False
 
-    i=input("twang> ")
-    if i=="play":
+    i=input("twang>> ")
+    if i=="help":
+        msg = \
+            " play - live synth playback\n" +\
+            " loop - put buffer on loop\n" +\
+            " quit"
+        print (msg)
+    elif i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
         stream = p.open(
             format=pyaudio.paFloat32, channels=1,
