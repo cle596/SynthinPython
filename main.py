@@ -61,9 +61,14 @@ while True:
     elif i == "mem":
         tone_keys = ""
         for x in tones.keys():
-            tone_keys += '\t' + x + '\n'
+            tone_keys += x + '\t' + tones[x]["id"] + '\n'
         print("tones")
         print(tone_keys)
+    elif i == "save":
+        f = open("mem.txt", 'w')
+        for x in tones:
+            f.write("%s\n" % tones[x])
+            f.close()
     elif i == "set":
         tone_select = input("select tone: ")
         if tone_select in tones.keys():
@@ -73,12 +78,15 @@ while True:
             print("tone doesn't exist in memory.")
     elif i == "tone":
         args = []
+        tone_id = input("id: ")
         tone_freq = input("freq: ")
         tone_freq = tone_freq.split(",")
         tone_freq = [notes[x] for x in tone_freq]
         tone_length = int(input("length: "))
         tone_adsr = input("adsr: ")
-        tones['t' + str(len(tones))] = create_tone(tone_freq, tone_length)
+        tones['t' + str(len(tones))] = {
+            'data': create_tone(tone_freq, tone_length),
+            'id': tone_id}
     elif i == "env":
         args = []
         env_domain = input("domain: ")
