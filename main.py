@@ -20,7 +20,7 @@ print()
 count=0
 ecount=0
 samplerate=44100
-notelength=5
+notelength=1
 def callback(in_data,frame_count,time_info,status):
     global down
     global count, ecount
@@ -42,8 +42,10 @@ def callback(in_data,frame_count,time_info,status):
 
 while True:
     p = pyaudio.PyAudio()
+    tones=[]
+    envs=[]
     emptytone = create_empty_tone(8,samplerate)
-    mytone = create_tone(440,notelength,samplerate)
+    mytone = create_tone(220,notelength,samplerate)
     down=False
 
     i=input("twang>> ")
@@ -56,18 +58,16 @@ while True:
             " quit"
         print (msg)
     elif i=="tone":
-        pass
-        """
-        input("freq: ")
-        input("length: ")
-        input("adsr: ")
-        """
+        args=[]
+        tone_freq = input("freq: ")
+        tone_length = input("length: ")
+        tone_adsr = input("adsr: ")
+        tones.append(create_tone(tone_freq,tone_length,44100))
     elif i=="env":
-        pass
-        """
-        input("domain: ")
-        input("equation: ")
-        """
+        args = []
+        env_domain = input("domain: ")
+        env_eq = input("equation: ")
+        envs.append((env_domain,env_eq))
     elif i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
         stream = p.open(

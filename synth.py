@@ -21,11 +21,11 @@ def env(type,length,rate):
     for x in range(0,quarter):
         env.append(1/quarter*x)
     for x in range(quarter,half):
-        env.append((-.7/quarter)*x+1.7)
+        env.append((-.5/quarter)*x+1.5)
     for x in range(half,half+quarter):
         env.append(env[half-1])
     for x in range(half+quarter,length):
-        env.append(-.3/quarter*x+1.2)
+        env.append(-.5/quarter*x+2)
     return env
 
 def create_tone(freq=440, length=1, rate=44100):
