@@ -34,10 +34,8 @@ def create_tone(freq=[440], length=1, rate=44100):
     for x in freq:
         wavs.append(1/len(freq)*sine(x,length,rate))
     chunk=sum(wavs)
-    """
     for x in range(0,len(e)):
         chunk[x] *= .8*e[x]
-    """
     return chunk.astype(numpy.float32)
 
 def create_empty_tone(length=1,rate=44100):
