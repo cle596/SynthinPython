@@ -37,3 +37,6 @@ def create_tone(frequency=440, length=1, rate=44100):
 def create_empty_tone(length=1,rate=44100):
     chunk=empty(length, rate)
     return chunk.astype(numpy.float32)
+
+def create_env():
+    pass

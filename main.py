@@ -49,10 +49,25 @@ while True:
     i=input("twang>> ")
     if i=="help":
         msg = \
+            " tone - synthesize tone\n" +\
+            " env - make a new envelope\n" +\
             " play - live synth playback\n" +\
             " loop - put buffer on loop\n" +\
             " quit"
         print (msg)
+    elif i=="tone":
+        pass
+        """
+        input("freq: ")
+        input("length: ")
+        input("adsr: ")
+        """
+    elif i=="env":
+        pass
+        """
+        input("domain: ")
+        input("equation: ")
+        """
     elif i=="play":
         cprint("press space to play, enter to go back",'green',attrs=['bold'])
         stream = p.open(
