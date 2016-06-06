@@ -16,20 +16,27 @@ def env(type,length,rate):
     length = int(length*rate)
     sixteenth = int(length/16)
     eighth = int(length/8)
+    quarter = int(length/4)
     half = int(length/2)
-    for x in range(0,sixteenth):
-        env.append(1/sixteenth*x)
-    for x in range(sixteenth,eighth):
-        env.append((-.8/sixteenth)*x+1.8)
-    for x in range(eighth,half):
-        env.append(env[eighth-1])
-    for x in range(half,length):
-        env.append(-.2/half*x+.4)
+    for x in range(0,quarter):
+        env.append(1/quarter*x)
+    for x in range(quarter,half):
+        env.append((-.7/quarter)*x+1.7)
+    for x in range(half,half+quarter):
+        env.append(env[half-1])
+    for x in range(half+quarter,length):
+        env.append(-.3/quarter*x+1.2)
     return env
 
-def create_tone(frequency=440, length=1, rate=44100):
+def create_tone(freq=440, length=1, rate=44100):
     e = env("piano",length,rate)
-    chunk=sine(frequency,length,rate)
+    wavs = [
+        .2*sine(freq,length,rate),
+        .2*sine(freq*4/3,length,rate),
+        .2*sine(freq*5/3,length,rate),
+        .2*sine(freq*2,length,rate)
+    ]
+    chunk=sum(wavs)
     for x in range(0,len(e)):
         chunk[x] *= .8*e[x]
     return chunk.astype(numpy.float32)
@@ -38,5 +45,5 @@ def create_empty_tone(length=1,rate=44100):
     chunk=empty(length, rate)
     return chunk.astype(numpy.float32)
 
-def create_env():
+def create_env(env,domain,equation):
     pass

@@ -20,7 +20,7 @@ print()
 count=0
 ecount=0
 samplerate=44100
-notelength=2
+notelength=5
 def callback(in_data,frame_count,time_info,status):
     global down
     global count, ecount
