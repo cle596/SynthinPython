@@ -18,3 +18,17 @@ notes = {
     'B4': 493.88,
     'C5': 523.25
 }
+
+notes['C3'] = notes['C4'] / 2
+notes['Cs3'] = notes['Cs4'] / 2
+notes['Db3'] = notes['Db4'] / 2
+notes['D3'] = notes['D4'] / 2
+notes['Ds3'] = notes['Ds4'] / 2
+notes['E3'] = notes['E4'] / 2
+notes['F3'] = notes['F4'] / 2
+notes['Fs3'] = notes['Fs4'] / 2
+notes['Gb3'] = notes['Gb4'] / 2
+notes['A3'] = notes['A4'] / 2
+notes['As3'] = notes['As4'] / 2
+notes['Bb3'] = notes['Bb4'] / 2
+notes['B3'] = notes['B4'] / 2
