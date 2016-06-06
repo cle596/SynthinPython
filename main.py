@@ -14,6 +14,8 @@ from time import time, sleep
 from synth import *
 from notes import *
 
+import pickle
+
 cprint(figlet_format('twang', font='univers'), 'green', attrs=['bold'])
 cprint("your favorite synth looper!", 'green', attrs=['bold'])
 print()
@@ -65,10 +67,9 @@ while True:
         print("tones")
         print(tone_keys)
     elif i == "save":
-        f = open("mem.txt", 'w')
-        for x in tones:
-            f.write("%s\n" % tones[x])
-            f.close()
+        with open("mem.txt", 'wb') as f:
+            pickle.dump(tones, f)
+        f.close()
     elif i == "set":
         tone_select = input("select tone: ")
         if tone_select in tones.keys():
