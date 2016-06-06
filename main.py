@@ -45,7 +45,7 @@ while True:
     tones=[]
     envs=[]
     emptytone = create_empty_tone(8,samplerate)
-    mytone = create_tone(220,notelength,samplerate)
+    mytone = create_tone([220],notelength,samplerate)
     down=False
 
     i=input("twang>> ")
@@ -60,9 +60,12 @@ while True:
     elif i=="tone":
         args=[]
         tone_freq = input("freq: ")
-        tone_length = input("length: ")
+        tone_freq = list(tone_freq)
+        tone_freq = [x for x in tone_freq if x!=',']
+        tone_freq = [int(x) for x in tone_freq]
+        tone_length = int(input("length: "))
         tone_adsr = input("adsr: ")
-        tones.append(create_tone(tone_freq,tone_length,44100))
+        tones.append(create_tone(tone_freq,tone_length))
     elif i=="env":
         args = []
         env_domain = input("domain: ")
