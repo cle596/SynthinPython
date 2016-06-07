@@ -47,6 +47,7 @@ def callback(in_data, frame_count, time_info, status):
 
 tones = {}
 envs = {}
+emptytone = create_empty_tone(8, samplerate)
 while True:
     p = pyaudio.PyAudio()
     down = False
@@ -70,11 +71,13 @@ while True:
         with open("mem.txt", 'wb') as f:
             pickle.dump(tones, f)
         f.close()
+    elif i == "load":
+        with open("mem.txt", "rb") as f:
+            tones = pickle.load(f)
     elif i == "set":
         tone_select = input("select tone: ")
         if tone_select in tones.keys():
-            emptytone = create_empty_tone(8, samplerate)
-            mytone = tones[tone_select]
+            mytone = tones[tone_select]["data"]
         else:
             print("tone doesn't exist in memory.")
     elif i == "tone":
