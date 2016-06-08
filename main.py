@@ -15,6 +15,8 @@ from synth import *
 from notes import *
 
 import pickle
+import wave
+from scipy.io import wavfile
 
 cprint(figlet_format('twang', font='univers'), 'green', attrs=['bold'])
 cprint("your favorite synth looper!", 'green', attrs=['bold'])
@@ -71,6 +73,7 @@ while True:
         with open("mem.txt", 'wb') as f:
             pickle.dump(tones, f)
         f.close()
+        wavfile.write("loop.wav", 44100, mytone)
     elif i == "load":
         with open("mem.txt", "rb") as f:
             tones = pickle.load(f)
