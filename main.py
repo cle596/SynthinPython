@@ -19,6 +19,8 @@ import wave
 from scipy.io import wavfile
 import numpy as np
 
+from collections import OrderedDict
+
 cprint(figlet_format('twang', font='univers'), 'green', attrs=['bold'])
 cprint("your favorite synth looper!", 'green', attrs=['bold'])
 print()
@@ -50,7 +52,8 @@ def callback(in_data, frame_count, time_info, status):
 
 tones = {}
 envs = {}
-buf = []
+buf = {}
+edit = OrderedDict()
 emptytone = create_empty_tone(8, samplerate)
 while True:
     p = pyaudio.PyAudio()
@@ -71,19 +74,49 @@ while True:
             tone_keys += x + '\t' + tones[x]["id"] + '\n'
         print("tones")
         print(tone_keys)
+        buf_keys = ""
+        for x in buf.keys():
+            buf_keys += x + '\n'
+        print("bufs")
+        print(buf_keys)
+        edit_keys = ""
+        for x in edit.keys():
+            edit_keys += x + '\n'
+        print("edit seq")
+        print(edit_keys)
     elif i == "save":
-        with open("mem.txt", 'wb') as f:
+        with open("tones.txt", 'wb') as f:
             pickle.dump(tones, f)
         f.close()
+        with open("buf.txt", 'wb') as g:
+            pickle.dump(buf, g)
+        g.close()
+        with open("edit.txt", 'wb') as h:
+            pickle.dump(edit, h)
+        h.close()
         try:
             mytone
         except:
             pass
         else:
             wavfile.write("loop.wav", 44100, mytone)
+    elif i == "write":
+        big_array = []
+        for x in edit.keys():
+            big_array.append(edit[x]["data"])
+        big_array = np.array(big_array)
+        big_array = big_array.flatten()
+        wavfile.write("edit.wav", 44100, big_array)
     elif i == "load":
-        with open("mem.txt", "rb") as f:
+        with open("tones.txt", "rb") as f:
             tones = pickle.load(f)
+        f.close()
+        with open("buf.txt", "rb") as g:
+            buf = pickle.load(g)
+        g.close()
+        with open("edit.txt", "rb") as h:
+            edit = pickle.load(h)
+        h.close()
     elif i == "set":
         tone_select = input("select tone: ")
         if tone_select in tones.keys():
@@ -91,12 +124,14 @@ while True:
         else:
             print("tone doesn't exist in memory.")
     elif i == "buf":
-        try:
-            mytone
-        except:
-            pass
+        stone = input("select tone: ")
+        if stone in tones.keys():
+            buf[stone] = tones[stone]
         else:
-            buf.append(mytone)
+            "tone isn't loaded/doesn't exist"
+    elif i == "edit":
+        atone = input("tone to add to edit sequence: ")
+        edit[atone] = tones[atone]
     elif i == "tone":
         args = []
         tone_id = input("name: ")
@@ -138,7 +173,7 @@ while True:
         t.daemon = True
         t.start()
 
-    elif i == "quit":
+    elif i in ["quit", "exit"]:
         try:
             stream
         except NameError:
