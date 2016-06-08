@@ -73,7 +73,12 @@ while True:
         with open("mem.txt", 'wb') as f:
             pickle.dump(tones, f)
         f.close()
-        wavfile.write("loop.wav", 44100, mytone)
+        try:
+            mytone
+        except:
+            pass
+        else:
+            wavfile.write("loop.wav", 44100, mytone)
     elif i == "load":
         with open("mem.txt", "rb") as f:
             tones = pickle.load(f)
@@ -85,7 +90,7 @@ while True:
             print("tone doesn't exist in memory.")
     elif i == "tone":
         args = []
-        tone_id = input("id: ")
+        tone_id = input("name: ")
         tone_freq = input("freq: ")
         tone_freq = tone_freq.split(",")
         tone_freq = [notes[x] for x in tone_freq]
