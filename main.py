@@ -17,6 +17,7 @@ from notes import *
 import pickle
 import wave
 from scipy.io import wavfile
+import numpy as np
 
 cprint(figlet_format('twang', font='univers'), 'green', attrs=['bold'])
 cprint("your favorite synth looper!", 'green', attrs=['bold'])
@@ -49,6 +50,7 @@ def callback(in_data, frame_count, time_info, status):
 
 tones = {}
 envs = {}
+buf = []
 emptytone = create_empty_tone(8, samplerate)
 while True:
     p = pyaudio.PyAudio()
@@ -88,6 +90,13 @@ while True:
             mytone = tones[tone_select]["data"]
         else:
             print("tone doesn't exist in memory.")
+    elif i == "buf":
+        try:
+            mytone
+        except:
+            pass
+        else:
+            buf.append(mytone)
     elif i == "tone":
         args = []
         tone_id = input("name: ")
